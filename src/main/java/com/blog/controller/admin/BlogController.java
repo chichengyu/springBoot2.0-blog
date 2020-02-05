@@ -1,0 +1,122 @@
+package com.blog.controller.admin;
+
+import com.blog.pojo.Blog;
+import com.blog.pojo.User;
+import com.blog.service.BlogService;
+import com.blog.service.TagService;
+import com.blog.service.TypeService;
+import com.blog.vo.BlogQueryVo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+
+@Controller
+@RequestMapping("/admin")
+public class BlogController {
+
+    @Autowired
+    private BlogService blogService;
+    @Autowired
+    private TypeService typeService;
+    @Autowired
+    private TagService tagService;
+
+    // jpa page分页是从index 0开始，显示10条
+    @GetMapping("/blogs")
+    public String blogs(@PageableDefault(page = 0,size = 10,sort = {"updateTime"},direction = Sort.Direction.DESC)Pageable pageable,
+                              BlogQueryVo blogQueryVo,
+                              Model model){
+        model.addAttribute("types",typeService.listType());
+        model.addAttribute("page",blogService.listBlogs(pageable,blogQueryVo));
+        return "admin/blogs";
+    }
+
+    // jpa page分页是从index 0开始，显示10条
+    @PostMapping("/blogs/search")
+    public String blogsSearch(@PageableDefault(page = 0,size = 10,sort = {"updateTime"},direction = Sort.Direction.DESC)Pageable pageable,
+                        BlogQueryVo blogQueryVo,
+                        Model model){
+        model.addAttribute("types",typeService.listType());
+        model.addAttribute("page",blogService.listBlogs(pageable,blogQueryVo));
+        // 返回 admin/blogs 页面下的一个片段 blogsList
+        return "admin/blogs :: blogsList";
+    }
+
+    /**
+     * 显示添加文章页面
+     * @param model
+     * @return
+     */
+    @GetMapping("/blogs/input")
+    public String input(Model model){
+        setTypeAndTag(model);
+        model.addAttribute("blog",new Blog());
+        return "admin/blogs-input";
+    }
+
+    /**
+     * 显示编辑文章页面
+     * @param model
+     * @return
+     */
+    @GetMapping("/blogs/{id}/input")
+    public String editInput(@PathVariable("id")Long id, Model model){
+        setTypeAndTag(model);
+        Blog blog = blogService.getBlogById(id);
+        blog.init();
+        model.addAttribute("blog",blog);
+        return "admin/blogs-input";
+    }
+
+    /**
+     * 添加 与 编辑 文章
+     * @param blog
+     * @param attributes
+     * @return
+     */
+    @PostMapping("/blogs")
+    public String post(Blog blog, RedirectAttributes attributes, HttpServletRequest request){
+        blog.setUser((User) request.getSession().getAttribute("user"));
+        blog.setType(typeService.getType(blog.getType().getId()));
+        blog.setTags(tagService.listTags(blog.getTagIds()));
+        Blog b;
+        if (blog.getId() == null){
+            b = blogService.saveBlog(blog);
+        }else{
+            b = blogService.updateBlog(blog.getId(),blog);
+        }
+        if (b == null){
+            attributes.addFlashAttribute("message","操作失败！");
+        }else{
+            attributes.addFlashAttribute("message","操作成功！");
+        }
+        return "redirect:/admin/blogs";
+    }
+
+    private void setTypeAndTag(Model model){
+        model.addAttribute("types",typeService.listType());
+        model.addAttribute("tags",tagService.listTags());
+    }
+
+    /**
+     * 删除文章
+     * @param id
+     * @return
+     */
+    @GetMapping("/blogs/{id}/delete")
+    public String deleteBlog(@PathVariable("id") Long id,RedirectAttributes attributes){
+        blogService.deleteBlog(id);
+        attributes.addFlashAttribute("message","删除成功！");
+        return "redirect:/admin/blogs";
+    }
+}

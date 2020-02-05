@@ -1,0 +1,38 @@
+spring:
+  datasource:
+    ###### jpbc ########
+    # driver-class-name: com.mysql.jdbc.Driver
+    # url: jdbc:mysql://127.0.0.1:3306/blog?useUnicode=true&characterEncoding=utf8&useSSL=false
+    # username: root
+    # password: 123456
+    ###### hikari ########
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/blog?useUnicode=true&characterEncoding=utf8&useSSL=false
+    hikari:
+      username: root
+      password: 123456
+      minimum-idle: 5  # 最小空闲连接数量
+      idle-timeout: 180000 # 空闲连接存活最大时间，默认600000（10分钟）
+      maximum-pool-size: 10 # 连接池最大连接数,默认是10
+      auto-commit: true # 此属性控制从池返回的连接的默认自动提交行为,默认值：true
+      pool-name: MyHikariCP # 连接池名称
+      max-lifetime: 1800000 # 此属性控制池中连接的最长生命周期,值0表示无限生命周期,默认1800000即30分钟
+      connection-timeout: 30000 # 数据库连接超时时间,默认30秒,即30000
+      # connection-test-query: SELECT 1 #连接池每分配一条连接前执行的查询语句（如：SELECT 1），以验证该连接是否是有效的。如果你的驱动程序支持 JDBC4,HikariCP 强烈建议我们不要设置此属性
+
+  jpa:
+    open-in-view: true # 开启open-in-view的意义: 在事务外也可以访问懒加载的数据
+    hibernate:
+      ddl-auto: update # 每次链接数据库事，比对当前实体与数据库表的字段是否一致，如果做了修改，每次都会去进行更新
+    show-sql: true
+
+server:
+  port: 8080
+
+# 日志默认 logback
+logging:
+  level:
+    root: info
+    com.blog: debug # 指定包的日志级别
+  file: d:/logs/blog/blog-dev.log
+

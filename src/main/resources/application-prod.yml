@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/blog?useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: root
+  jpa:
+    open-in-view: false # 开启open-in-view的意义: 在事务外也可以访问懒加载的数据
+    hibernate:
+      ddl-auto: none # 每次链接数据库事，比对当前实体与数据库表的字段是否一致，如果做了修改，每次都会去进行更新
+    show-sql: true
+
+server:
+  port: 8081
+
+# 日志默认 logback
+logging:
+  level:
+    root: warn
+    com.blog: info # 指定包的日志级别
+  file: d:/logs/blog/blog-prod.log

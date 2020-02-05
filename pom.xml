@@ -1,14 +1,3 @@
-# springBoot2.0-blog
-
-使用 springBoot2.0 进行开发的一个博客，文章使用 [markdown](https://pandao.github.io/editor.md/) 语法，[prism代码高亮](https://github.com/PrismJS/prism)，[Tocbot文章目录生成](https://tscanlin.github.io/tocbot/)，[动画animate.css](https://daneden.github.io/animate.css/)，[waypoints滚到侦测](http://imakewebthings.com/waypoints/)，[Jquery平滑滚动](https://github.com/flesler/jquery.scrollTo)，[qrcode二维码](https://davidshimjs.github.io/qrcodejs/)  
-
-模板：thymeleaf
-
-页面开发使用 [semantic-ui官网](https://semantic-ui.com/)，[semantic-ui中文网](http://www.semantic-ui.cn/)，[背景图片资源](https://www.toptal.com/designers/subtlepatterns/)
-
-自定义 `MarkdownUtils`工具类(m`arkdown`转`html`)
-
-```
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -33,7 +22,6 @@
     </properties>
 
     <dependencies>
-        <!-- 打包时用到 -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -139,5 +127,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>
-```
