@@ -6,7 +6,9 @@
 
 页面开发使用 [semantic-ui官网](https://semantic-ui.com/)，[semantic-ui中文网](http://www.semantic-ui.cn/)，[背景图片资源](https://www.toptal.com/designers/subtlepatterns/)
 
-自定义 `MarkdownUtils`工具类(m`arkdown`转`html`)
+自定义 `MarkdownUtils`工具类(`markdown`转`html`)
+
+用到的jar包
 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
