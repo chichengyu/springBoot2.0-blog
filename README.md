@@ -1,6 +1,6 @@
 # springBoot2.0-blog
 
-使用 springBoot2.0 进行开发的一个博客，文章使用 [markdown](https://pandao.github.io/editor.md/) 语法，[prism代码高亮](https://github.com/PrismJS/prism)，[Tocbot文章目录生成](https://tscanlin.github.io/tocbot/)，[动画animate.css](https://daneden.github.io/animate.css/)，[waypoints滚到侦测](http://imakewebthings.com/waypoints/)，[Jquery平滑滚动](https://github.com/flesler/jquery.scrollTo)，[qrcode二维码](https://davidshimjs.github.io/qrcodejs/)  
+使用 springBoot2.0 进行开发的一个博客，文章使用 [markdown](https://pandao.github.io/editor.md/) 语法，[prism代码高亮](https://github.com/PrismJS/prism)，[Tocbot文章目录生成](https://tscanlin.github.io/tocbot/)，[动画animate.css](https://daneden.github.io/animate.css/)，[waypoints滚到侦测](http://imakewebthings.com/waypoints/)，[Jquery平滑滚动](https://github.com/flesler/jquery.scrollTo)，[qrcode二维码](https://davidshimjs.github.io/qrcodejs/) 以及 springBoot 事物通知运用
 
 模板：thymeleaf
 
