@@ -1,8 +1,10 @@
 package com.blog.aspect;
 
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -24,6 +26,29 @@ public class LogAspect {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    // ================================= 方式一 ===================================
+
+    /**
+     * Around 覆盖了 Before 、after 等等，所有只需要写一个 Around 就可以了
+     * @param pjp
+     * @return
+     */
+    @Around("execution(* com.blog.controller.*.*(..))")
+    public Object handleControllerMethod(ProceedingJoinPoint pjp) throws Throwable {
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = requestAttributes.getRequest();
+        String url = request.getRequestURL().toString();// url
+        String ip = request.getRemoteAddr();// ip
+        Class className = pjp.getSignature().getDeclaringType();// 获取控制器，包含报包名
+        String name = pjp.getSignature().getName();// 获取方法名
+        Object[] args = pjp.getArgs();// 所有参数
+        Object object = pjp.proceed();// 调用执行真正请求的控制器方法
+        // System.out.println(Arrays.toString(args));
+        return object;
+    }
+
+    // ================================= 方式二 ===================================
+
     @Pointcut("execution(* com.blog.controller.*.*(..))")
     public void log(){}
 
@@ -37,7 +62,7 @@ public class LogAspect {
         // joinPoint.getSignature().getDeclaringType() 获取包名
         // joinPoint.getSignature().getName() 获取方法名
         String classMethod = joinPoint.getSignature().getDeclaringType() + "." + joinPoint.getSignature().getName();
-        Object[] args = joinPoint.getArgs();
+        Object[] args = joinPoint.getArgs();// 方法参数
         RequestLog requestLog = new RequestLog(url, ip, classMethod, args);
         logger.info("Request : {}", requestLog);
     }
